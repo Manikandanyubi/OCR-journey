@@ -216,6 +216,10 @@ def verify_token(token: str) -> str:
 def add_user_to_db(user: UserInDB):
     users_collection.insert_one(user.dict())
 
+@app.get("/")
+def start():
+    return {"message":"Server working bro!"}
+
 @app.post("/signup/")
 def signup(user: User):
     if users_collection.find_one({"email": user.email}):
@@ -249,7 +253,7 @@ def signin(user: User):
         raise http_exc
     except Exception as e:
         print(f"Signin Error: {e}")  # Log the error to the console
-        raise HTTPException(status_code=500, detail=f"Internal server error: {e}")  # Include error details in the response
+        raise HTTPException(status_code=500, detail=f"Internal server error: {e}")
 
 
 
@@ -268,7 +272,7 @@ def ocr_extraction():
 
     # Hardcoded file paths (replace these with actual file paths on your server)
     file_paths = [
-        'aadhar.pdf'
+        "aadhar.pdf","sample-invoice.pdf"
     ]
 
     files = []
